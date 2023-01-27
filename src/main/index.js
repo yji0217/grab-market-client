@@ -1,22 +1,23 @@
+import React from "react";
 import "./index.css";
 import axios from "axios";
-import React from "react";
+import { Link } from "react-router-dom";
 
 function MainPage() {
   const [products, setProducts] = React.useState([]);
   React.useEffect(function () {
     axios
       .get(
-        "https://491bd4c5-ec8c-4a72-9a81-b9535bc139a4.mock.pstmn.io/products"
+        "https://341cf269-c712-4751-a587-2c7fd1b972ec.mock.pstmn.io/products"
       )
       .then(function (result) {
         const products = result.data.products;
         setProducts(products);
       })
       .catch(function (error) {
-        console.log("에러발생:", error);
+        console.error("에러 발생 : ", error);
       });
-  });
+  }, []);
 
   return (
     <div>
@@ -34,20 +35,22 @@ function MainPage() {
           {products.map(function (product, index) {
             return (
               <div className="product-card">
-                <div>
-                  <img className="product-img" src={product.imageUrl} />
-                </div>
-                <div className="product-contents">
-                  <span className="product-name">{product.name}</span>
-                  <span className="product-price">{product.price}원</span>
-                  <div className="product-seller">
-                    <img
-                      className="product-avatar"
-                      src="images/icons/avatar.png"
-                    />
-                    <span>{product.seller}</span>
+                <Link className="product-link" to={`/products/${index}`}>
+                  <div>
+                    <img className="product-img" src={product.imageUrl} />
                   </div>
-                </div>
+                  <div className="product-contents">
+                    <span className="product-name">{product.name}</span>
+                    <span className="product-price">{product.price}원</span>
+                    <div className="product-seller">
+                      <img
+                        className="product-avatar"
+                        src="images/icons/avatar.png"
+                      />
+                      <span>{product.seller}</span>
+                    </div>
+                  </div>
+                </Link>
               </div>
             );
           })}
